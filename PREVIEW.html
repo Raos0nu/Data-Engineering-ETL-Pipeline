@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETL Pipeline Dashboard - Preview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #718096; font-size: 1.1rem; margin-bottom: 1rem; }
+        
+        .info-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover { transform: translateY(-4px); }
+        
+        .card-purple { border-left: 4px solid #9f7aea; }
+        .card-blue { border-left: 4px solid #4299e1; }
+        .card-green { border-left: 4px solid #48bb78; }
+        .card-orange { border-left: 4px solid #ed8936; }
+        
+        .card h2 { color: #2d3748; margin-bottom: 1rem; font-size: 1.5rem; }
+        .card p { color: #718096; line-height: 1.6; }
+        
+        .steps {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin: 2rem 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 { color: #2d3748; margin-bottom: 0.5rem; }
+        .step-content p { color: #718096; }
+        .step-content code {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .feature {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+        
+        .feature h3 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .feature p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.25rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 1rem 0;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            margin: 2rem 0;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .screenshot-placeholder h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .screenshot-placeholder p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 ETL Pipeline Dashboard</h1>
+            <p class="subtitle">Your project has been transformed with a beautiful, modern web interface!</p>
+            
+            <div class="info-box">
+                <strong>✨ What's New:</strong> Your command-line ETL pipeline now has a professional web dashboard with interactive charts, data management, and real-time analytics!
+            </div>
+        </div>
+        
+        <div class="screenshot-placeholder">
+            <h2>🎨</h2>
+            <p>Beautiful gradient interface with modern cards, charts, and animations</p>
+            <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.8;">Run the setup and start scripts to see it live!</p>
+        </div>
+        
+        <div class="steps">
+            <h2 style="color: #2d3748; margin-bottom: 1.5rem;">🚀 Get Started in 3 Simple Steps</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Run Setup (First Time Only)</h3>
+                    <p>Install all dependencies and build the frontend</p>
+                    <code>setup.bat</code> (Windows) or <code>./setup.sh</code> (Mac/Linux)
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Start the Server</h3>
+                    <p>Launch the Flask backend with React frontend</p>
+                    <code>start.bat</code> (Windows) or <code>./start.sh</code> (Mac/Linux)
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Open Your Browser</h3>
+                    <p>Access your new dashboard</p>
+                    <code>http://localhost:5000</code>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card card-purple">
+                <h2>📈 Dashboard</h2>
+                <p>View key metrics with beautiful stat cards showing total orders, revenue, average order value, and items sold. See recent orders at a glance.</p>
+            </div>
+            
+            <div class="card card-blue">
+                <h2>📋 Data Table</h2>
+                <p>Browse all sales records with search, sort, and filter capabilities. Delete records with confirmation dialogs.</p>
+            </div>
+            
+            <div class="card card-green">
+                <h2>➕ Add Data</h2>
+                <p>User-friendly form with real-time validation, auto-calculated totals, and instant feedback on submission.</p>
+            </div>
+            
+            <div class="card card-orange">
+                <h2>📊 Analytics</h2>
+                <p>Beautiful charts showing revenue distribution, sales trends, and product performance with interactive visualizations.</p>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h2 style="color: #2d3748; margin-bottom: 1.5rem;">✨ Features Included</h2>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>🎨 Modern Design</h3>
+                    <p>Purple gradient theme, smooth animations, card-based layout</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>📊 4 Chart Types</h3>
+                    <p>Bar charts, pie charts, line charts, and data tables</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🔍 Search & Sort</h3>
+                    <p>Real-time search and multi-column sorting</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>✅ Form Validation</h3>
+                    <p>Real-time validation with helpful error messages</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🚀 One-Click ETL</h3>
+                    <p>Execute entire pipeline with single button</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>📱 Responsive</h3>
+                    <p>Works perfectly on desktop, tablet, and mobile</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h2 style="color: #2d3748; margin-bottom: 1.5rem;">📚 Documentation Included</h2>
+            <p style="color: #718096; margin-bottom: 1rem;">Comprehensive guides to help you get the most out of your dashboard:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>📖 START_HERE.md</h3>
+                    <p>Quick overview and getting started guide</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>⚡ QUICKSTART.md</h3>
+                    <p>Fast track to getting your dashboard running</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🔧 INSTALLATION.md</h3>
+                    <p>Detailed installation and troubleshooting</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>✨ FEATURES.md</h3>
+                    <p>Complete feature list and capabilities</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🎨 VISUAL_GUIDE.md</h3>
+                    <p>Design system, colors, and components</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>📊 PROJECT_SUMMARY.md</h3>
+                    <p>Complete project overview and technical details</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header" style="text-align: center;">
+            <h2 style="color: #2d3748; margin-bottom: 1rem;">Ready to See Your Dashboard?</h2>
+            <p style="color: #718096; margin-bottom: 1.5rem;">Follow the 3 simple steps above to launch your new ETL Pipeline Dashboard!</p>
+            
+            <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); padding: 2rem; border-radius: 12px; margin-top: 1.5rem;">
+                <h3 style="color: #2d3748; margin-bottom: 1rem;">📋 Tech Stack</h3>
+                <p style="color: #718096;">
+                    <strong>Backend:</strong> Python, Flask, Pandas, SQLite<br>
+                    <strong>Frontend:</strong> React 18, Recharts, Axios<br>
+                    <strong>Styling:</strong> Modern CSS3 with gradients & animations
+                </p>
+            </div>
+        </div>
+        
+        <footer>
+            <p><strong>🎉 Your ETL Pipeline is now production-ready!</strong></p>
+            <p style="margin-top: 0.5rem; opacity: 0.9;">Built with ❤️ using React, Flask, and modern web technologies</p>
+        </footer>
+    </div>
+</body>
+</html>
+
